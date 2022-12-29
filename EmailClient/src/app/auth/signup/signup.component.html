@@ -1,0 +1,60 @@
+<h3>Create an account</h3>
+<form class="ui form" [formGroup]="authForm">
+    <!-- <div class="field">
+        <label>Username</label>
+        <input formControlName="username" />
+    </div>
+    <div class="field">
+        <label>Password</label>
+        <input formControlName="password" />
+    </div>
+
+  <div class="field">
+        <label>Password Confirmation</label>
+        <input formControlName="passwordConfirmation" />
+    </div>-->
+
+    <app-input
+        inputType="text"
+        label="Username"
+        [control]="$any(authForm).get('username')"
+    >
+    </app-input>
+
+    <app-input
+        inputType="password"
+        label="Password"
+        [control]="$any(authForm).get('password')"
+    >
+    </app-input>
+    <app-input
+        inputType="password"
+        label="Password (again)"
+        [control]="$any(authForm).get('passwordConfirmation')"
+    >
+    </app-input>
+
+    <div
+        class="ui red basic label"
+        *ngIf="
+            authForm.get('password')?.touched &&
+            authForm.get('passwordConfirmation')?.touched &&
+            authForm.errors
+        "
+    >
+        <p *ngIf="authForm.errors?.passwordMatchError">Passwords don't match</p>
+        <!-- <p *ngIf="authform.errors.passwordMatchError">Passwords don't match</p> -->
+    </div>
+
+    <!-- {{ authForm.get("username")?.errors | json }}
+    {{ authForm.get("password")?.errors | json }}
+    {{ authForm.get("passwordConfirmation")?.errors | json }} -->
+
+    <div>
+        <button [disabled]="authForm.invalid" class="ui submit button primary">
+            Submit
+        </button>
+    </div>
+
+    <!-- {{ authForm.errors | json }} -->
+</form>

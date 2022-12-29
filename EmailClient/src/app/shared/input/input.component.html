@@ -1,0 +1,22 @@
+<div class="field">
+    <label> {{ label }} </label>
+    <!-- This also works <input type="{{ inputType }}" [formControl]="control" /> -->
+
+    <input [type]="inputType" [formControl]="control" />
+    <div *ngIf="showErrors()" class="ui pointing red basic label">
+        <p *ngIf="control?.errors?.required">Required field</p>
+        <p *ngIf="control?.errors?.minlength">
+            Must be at least
+            {{ control?.errors?.minlength.requiredLength }} characters
+        </p>
+        <p *ngIf="control?.errors?.maxlength">
+            Must be less than
+            {{ control?.errors?.maxlength.requiredLength }} characters
+        </p>
+        <p *ngIf="control?.errors?.pattern">Invalid format</p>
+        <p *ngIf="control?.errors?.usernameTaken">Username taken</p>
+        <p *ngIf="control?.errors?.noConnection">
+            Network connection unavailable, try again later
+        </p>
+    </div>
+</div>
