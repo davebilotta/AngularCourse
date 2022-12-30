@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, tap } from 'rxjs';
 
 interface UsernameAvailableResponse {
     available: boolean;
@@ -15,11 +16,17 @@ interface SignupResponse {
     username: string;
 }
 
+interface AuthenticationResponse {
+    authenticated: boolean;
+    username: string;
+}
+
 @Injectable({
     providedIn: 'root',
 })
 export class AuthService {
     rootUrl = 'https://api.angular-email.com';
+    signedIn$ = new BehaviorSubject(false); // '$' is convention for an Observable
 
     constructor(private httpClient: HttpClient) {}
 
@@ -33,9 +40,51 @@ export class AuthService {
     }
 
     signup(credentials: SignupCredentials) {
-        return this.httpClient.post<SignupResponse>(
-            `${this.rootUrl}/auth/signup`,
-            {}
+        return this.httpClient
+            .post<SignupResponse>(
+                `${this.rootUrl}/auth/signup`,
+                credentials
+                // This is because httpClient discards cookies by default
+                // NOTE: This will eventually be handled by http interceptor
+                //{ withCredentials: true }
+            )
+            .pipe(
+                // Error coming out of response will skip 'tap', which is what we want
+                tap(() => {
+                    this.signedIn$.next(true);
+                })
+            );
+    }
+
+    signout() {
+        return this.httpClient.post(`${this.rootUrl}/auth/signout`, {}).pipe(
+            tap(() => {
+                console.log('USER IS NOW SIGNED OUT');
+                this.signedIn$.next(false);
+            })
         );
+    }
+
+    checkAuth() {
+        /* Checks user's authentication status */
+        return this.httpClient
+            .get<AuthenticationResponse>(
+                `${this.rootUrl}/auth/signedin`
+                // This is because httpClient discards cookies by default
+                // NOTE: This will eventually be handled by http interceptor
+                //{ withCredentials: true }
+            )
+            .pipe(
+                tap(({ username, authenticated }) => {
+                    console.log(
+                        'checkAuth() user:',
+                        username,
+                        'is authenticated:',
+                        authenticated
+                    );
+
+                    this.signedIn$.next(authenticated);
+                })
+            );
     }
 }
