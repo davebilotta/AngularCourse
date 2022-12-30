@@ -16,6 +16,15 @@ interface SignupResponse {
     username: string;
 }
 
+export interface SigninCredentials {
+    username: string | undefined | null;
+    password: string | undefined | null;
+}
+
+interface SigninResponse {
+    username: string;
+}
+
 interface AuthenticationResponse {
     authenticated: boolean;
     username: string;
@@ -56,6 +65,16 @@ export class AuthService {
             );
     }
 
+    signin(credentials: SigninCredentials) {
+        return this.httpClient
+            .post(`${this.rootUrl}/auth/signin`, credentials)
+            .pipe(
+                tap(() => {
+                    this.signedIn$.next(true);
+                })
+            );
+    }
+
     signout() {
         return this.httpClient.post(`${this.rootUrl}/auth/signout`, {}).pipe(
             tap(() => {
@@ -76,12 +95,12 @@ export class AuthService {
             )
             .pipe(
                 tap(({ username, authenticated }) => {
-                    console.log(
-                        'checkAuth() user:',
-                        username,
-                        'is authenticated:',
-                        authenticated
-                    );
+                    // console.log(
+                    //     'checkAuth() user:',
+                    //     username,
+                    //     'is authenticated:',
+                    //     authenticated
+                    // );
 
                     this.signedIn$.next(authenticated);
                 })

@@ -6,10 +6,9 @@ import { AuthHttpInterceptor } from './auth/auth-http-interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
-import { SignoutComponent } from './signout/signout.component';
 
 @NgModule({
-    declarations: [AppComponent, SignoutComponent],
+    declarations: [AppComponent],
     imports: [HttpClientModule, BrowserModule, AppRoutingModule, AuthModule],
 
     // This is how we "override" the dependency injection system

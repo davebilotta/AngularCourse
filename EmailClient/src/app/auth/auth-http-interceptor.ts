@@ -20,7 +20,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
         req: HttpRequest<any>,
         next: HttpHandler
     ): Observable<HttpEvent<any>> {
-        console.log('interceptor', req);
+        //console.log('interceptor', req);
         // Modify (or log) the outgoing request
         // Need to do it this way because we can't do
         // 'req.withCredentials = true' since it is read-only
@@ -29,7 +29,7 @@ export class AuthHttpInterceptor implements HttpInterceptor {
             // Can modify other parameters here
         });
 
-        console.log('interceptor', modifiedReq);
+        //console.log('interceptor', modifiedReq);
 
         return next.handle(modifiedReq);
         // .pipe(

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatchPassword } from '../validators/match-password';
 import { UniqueUsername } from '../validators/unique-username';
 import { AuthService } from '../auth.service';
 import { SignupCredentials } from '../auth.service';
+
 @Component({
     selector: 'app-signup',
     templateUrl: './signup.component.html',
@@ -13,7 +15,8 @@ export class SignupComponent implements OnInit {
     constructor(
         private matchPassword: MatchPassword,
         private uniqueUsername: UniqueUsername,
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
 
     authForm = new FormGroup(
@@ -60,7 +63,8 @@ export class SignupComponent implements OnInit {
             .subscribe({
                 next: (resp) => {
                     // We want to navigate to some other route
-                    console.log('Success', resp);
+
+                    this.router.navigateByUrl('/inbox');
                 },
                 //complete() {},
                 error: (err) => {
