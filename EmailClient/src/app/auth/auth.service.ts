@@ -36,6 +36,7 @@ interface AuthenticationResponse {
 export class AuthService {
     rootUrl = 'https://api.angular-email.com';
     signedIn$ = new BehaviorSubject<boolean | null>(null); // '$' is convention for an Observable
+    username = '';
 
     constructor(private httpClient: HttpClient) {}
 
@@ -59,18 +60,20 @@ export class AuthService {
             )
             .pipe(
                 // Error coming out of response will skip 'tap', which is what we want
-                tap(() => {
+                tap((response) => {
                     this.signedIn$.next(true);
+                    this.username = response.username;
                 })
             );
     }
 
     signin(credentials: SigninCredentials) {
         return this.httpClient
-            .post(`${this.rootUrl}/auth/signin`, credentials)
+            .post<SigninResponse>(`${this.rootUrl}/auth/signin`, credentials)
             .pipe(
-                tap(() => {
+                tap((response) => {
                     this.signedIn$.next(true);
+                    this.username = response.username;
                 })
             );
     }
@@ -103,6 +106,7 @@ export class AuthService {
                     // );
 
                     this.signedIn$.next(authenticated);
+                    this.username = username;
                 })
             );
     }

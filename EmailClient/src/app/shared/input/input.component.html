@@ -2,7 +2,17 @@
     <label> {{ label }} </label>
     <!-- This also works <input type="{{ inputType }}" [formControl]="control" /> -->
 
-    <input [type]="inputType" [formControl]="control" />
+    <input
+        *ngIf="controlType === 'input'"
+        [type]="inputType"
+        [formControl]="control"
+    />
+
+    <textarea
+        *ngIf="controlType === 'textarea'"
+        [formControl]="control"
+    ></textarea>
+
     <div *ngIf="showErrors()" class="ui pointing red basic label">
         <p *ngIf="control?.errors?.required">Required field</p>
         <p *ngIf="control.errors?.minlength">
@@ -14,6 +24,7 @@
             {{ control.errors?.maxlength.requiredLength }} characters
         </p>
         <p *ngIf="control?.errors?.pattern">Invalid format</p>
+        <p *ngIf="control?.errors?.email">Invalid Email address</p>
         <p *ngIf="control?.errors?.usernameTaken">Username taken</p>
         <p *ngIf="control?.errors?.noConnection">
             Network connection unavailable, try again later
