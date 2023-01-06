@@ -1,0 +1,9 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import 'bulma/css/bulma.css';
+
+/* Has to be here because this class comes from Wikipedia - if this is in the component's
+   stylesheet, it won't recognize this since it doesn't come from the template file */
+.searchmatch {
+    font-weight: bold
+}

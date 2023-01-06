@@ -1,0 +1,47 @@
+<h1>Image Selector</h1>
+<nav aria-label="Page navigation example" *ngIf="images.length > 0">
+  <ul class="pagination">
+    <!-- ngClass is creating an OBJECT -->
+    <!-- [ngClass]="{ active: i === currentPage }"-->
+
+    <!-- Previous Button -->
+    <li class="page-item" [ngClass]="currentPage === 0 ? 'disabled' : ''">
+      <a (click)="currentPage = currentPage - 1" class="page-link">Previous</a>
+    </li>
+    <!-- Iterate through all -->
+    <!-- [appClass]="i === currentPage ? 'active' : ''"-->
+    <!--    <ng-container *ngFor="let image of images; let i = index"> -->
+    <ng-container *appTimes="images.length; let i = index">
+      <li
+        class="page-item"
+        *ngIf="checkWindowIndex(i)"
+        [appClass]="{ active: i === currentPage }"
+      >
+        <a class="page-link" (click)="currentPage = i">{{ i + 1 }}</a>
+      </li>
+    </ng-container>
+
+    <!-- Next Button -->
+    <li
+      class="page-item"
+      [ngClass]="currentPage === images.length - 1 ? 'disabled' : ''"
+    >
+      <a (click)="currentPage = currentPage + 1" class="page-link">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<div>
+  <h4 [appClass]="'red'">{{ images[currentPage].title }}</h4>
+  <img [src]="images[currentPage].url" />
+</div>
+
+<div [ngSwitch]="currentPage">
+  <div *ngSwitchCase="0">
+    <p>page 0</p>
+  </div>
+</div>
+
+<!-- <ul *appTimes="5">
+  <li>Hi there!</li>
+</ul> -->

@@ -1,0 +1,4 @@
+<div class="image-viewer-cont">
+  <img *ngIf="this.url" [src]="this.url" [alt]="this.altText"/>
+  <div><button class="button" (click)="getImage()">Get Image</button></div>
+</div>

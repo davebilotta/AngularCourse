@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmit()" #emailForm="ngForm">
+    <input required
+           [ngClass]="{'is-danger': emailControl.invalid && emailControl.touched}"
+           type="email"
+           pattern=".+@.+\..+"
+           name="email"
+           [(ngModel)]="email"
+           #emailControl="ngModel"
+    />
+    {{email}}
+    <ng-container *ngIf="emailControl.invalid && emailControl.touched">
+        <div class="help is-danger" *ngIf="emailControl.errors?.required">Email address required</div>
+        <div class="help is-danger" *ngIf="emailControl.errors?.pattern">Invalid format for email</div>
+    </ng-container>
+    <button class="button is-primary" [disabled]="emailForm.invalid">Submit</button>
+</form>
+
+<hr/>
+<div>Is Form valid: {{ emailForm.valid }}</div>
+<div>Form values: {{ emailForm.value | json}}</div>
+<div>Email validation errors: {{emailControl.errors | json}}</div>
